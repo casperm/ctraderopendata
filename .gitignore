@@ -1,0 +1,5 @@
+AppBinary/*
+src/.vs/*
+src/PepperStoneDataExtract/bin/*
+src/PepperStoneDataExtract/obj/*
+src/packages/*
