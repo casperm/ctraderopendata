@@ -83,16 +83,16 @@ namespace cTrader.OpenData.ParquetConversion
             var askCol = new DataColumn(new DataField<double>("Ask"),_asks);
 
             var _bids = data.Select(s => s.Bid).ToArray();
-            var bidCol = new DataColumn(new DataField<double>("Bid"), _asks);
+            var bidCol = new DataColumn(new DataField<double>("Bid"), _bids);
 
             var _isRealAsks = data.Select(s => s.IsRealAsk).ToArray();
-            var realAskCol = new DataColumn(new DataField<double>("IsRealAsk"), _asks);
+            var realAskCol = new DataColumn(new DataField<bool>("IsRealAsk"), _isRealAsks);
 
             var _isRealBids = data.Select(s => s.IsRealBid).ToArray();
-            var realBitCol = new DataColumn(new DataField<double>("IsRealBid"), _asks);
+            var realBitCol = new DataColumn(new DataField<bool>("IsRealBid"), _isRealBids);
 
             var _timeUTC = data.Select(s => s.TimeUtc).ToArray();
-            var timeCol = new DataColumn(new DataField<double>("TimeUtc"), _asks);
+            var timeCol = new DataColumn(new DataField<DateTime>("TimeUtc"), _timeUTC);
             #endregion
 
             // create file schema

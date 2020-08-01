@@ -3,3 +3,6 @@ src/.vs/*
 src/PepperStoneDataExtract/bin/*
 src/PepperStoneDataExtract/obj/*
 src/packages/*
+bin/*
+/src/OpenDataConverter/bin/Debug
+/src/OpenDataConverter/obj/Debug

@@ -35,19 +35,19 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Common.Domain">
-      <HintPath>..\..\..\AppBinary\Common.Domain.dll</HintPath>
+      <HintPath>..\..\bin\Common.Domain.dll</HintPath>
     </Reference>
     <Reference Include="Common.Domain.PCL">
-      <HintPath>..\..\..\AppBinary\Common.Domain.PCL.dll</HintPath>
+      <HintPath>..\..\bin\Common.Domain.PCL.dll</HintPath>
     </Reference>
     <Reference Include="Core.Framework.Extension.PCL">
-      <HintPath>..\..\..\AppBinary\Core.Framework.Extension.PCL.dll</HintPath>
+      <HintPath>..\..\bin\Core.Framework.Extension.PCL.dll</HintPath>
     </Reference>
     <Reference Include="cTrader.Automate.Small.V1">
-      <HintPath>..\..\..\AppBinary\cTrader.Automate.Small.V1.dll</HintPath>
+      <HintPath>..\..\bin\cTrader.Automate.Small.V1.dll</HintPath>
     </Reference>
     <Reference Include="cTrader.Automate.Small.V1.Backtesting">
-      <HintPath>..\..\..\AppBinary\cTrader.Automate.Small.V1.Backtesting.dll</HintPath>
+      <HintPath>..\..\bin\cTrader.Automate.Small.V1.Backtesting.dll</HintPath>
     </Reference>
     <Reference Include="Parquet, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Parquet.Net.3.6.0\lib\netstandard2.0\Parquet.dll</HintPath>
