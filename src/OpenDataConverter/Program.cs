@@ -30,7 +30,7 @@ namespace cTrader.OpenData.ParquetConversion
 
             var selectedSymbol = FilterSymobl(_symbols);
 
-            foreach (var itm in _symbols)
+            foreach (var itm in selectedSymbol)
             {
                 var symbol = itm.Key;
                 var path = $"{itm.Value}\\{_interval}";
@@ -164,7 +164,7 @@ namespace cTrader.OpenData.ParquetConversion
         static Dictionary<string, string> FilterSymobl(Dictionary<string, string> symbols)
         {
             #region User Input
-            Console.WriteLine($"We see following Symobls.\nUse comma(,) to seperate options.\nPress enter for all options: \n{String.Join("\n", symbols.Keys) }");
+            Console.WriteLine($"We see following Symobls.\nUse comma(,) to seperate options.\nPress enter for all options: \n{String.Join("\n", symbols.Keys) }\n");
             var _userOption = Console.ReadLine().Trim();
             #endregion
             if(_userOption.IsNullOrEmpty())
