@@ -20,6 +20,7 @@ Common.Domain.dll
 Common.Domain.PCL.dll
 ctrader.Automate.Small.V1.dll
 ctrader.Automate.Small.V1.Backtesting.dll
+Core.Framework.Extension.dll
 Core.Framework.Extension.PCL.dll
 ```
 4. Add all **5** libraries to the project.

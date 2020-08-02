@@ -151,7 +151,7 @@ namespace cTrader.OpenData.ParquetConversion
 
             var _accountCacheData = $"{Environment.GetEnvironmentVariable("USERPROFILE")}\\AppData\\Roaming\\pepperstone cTrader\\BacktestingCache\\{_userOption}";
 
-            return Directory.GetDirectories(_accountCacheData).ToDictionary(k => k.Replace($"{_cachePath}\\",""), v => v);
+            return Directory.GetDirectories(_accountCacheData).ToDictionary(k => k.Replace($"{_accountCacheData}\\",""), v => v);
         }
         static List<DateTime> GetAvailableDate(string path)
         {

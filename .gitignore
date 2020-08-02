@@ -6,3 +6,4 @@ src/packages/*
 bin/*
 /src/OpenDataConverter/bin/Debug
 /src/OpenDataConverter/obj/Debug
+/.vs
