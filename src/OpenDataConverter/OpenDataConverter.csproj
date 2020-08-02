@@ -40,6 +40,9 @@
     <Reference Include="Common.Domain.PCL">
       <HintPath>..\..\bin\Common.Domain.PCL.dll</HintPath>
     </Reference>
+    <Reference Include="Core.Framework.Extension">
+      <HintPath>..\..\bin\Core.Framework.Extension.dll</HintPath>
+    </Reference>
     <Reference Include="Core.Framework.Extension.PCL">
       <HintPath>..\..\bin\Core.Framework.Extension.PCL.dll</HintPath>
     </Reference>

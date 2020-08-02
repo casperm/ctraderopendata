@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using Parquet.Data;
 using Parquet;
 using System.Threading.Tasks;
+using Core.Framework.Extension.PCL.Extensions;
 
 namespace cTrader.OpenData.ParquetConversion
 {
@@ -19,31 +20,31 @@ namespace cTrader.OpenData.ParquetConversion
     {
         static void Main(string[] args)
         {
-            var _account = "";
-            var _start = new DateTime(2013, 7, 22);
-            var _end = new DateTime(2020, 4,30);
-
-            
-            
+        
             var _interval = "Ticks";
             var _startime = DateTime.Now;
             
-            var _symbols = GetAvailableSymbol(_account);
-
-            var date_ranges = Enumerable.Range(0,(_end - _start).Days)
-                .Select(s => _start.AddDays(s))
-                .GroupBy(g => g.ToString("yyyyMM"))
-                .ToDictionary(k => k.Key, v => v.ToList());
-
             var exportTasks = new List<Task>();
+
+            var _symbols = GetAvailableSymbol();
+
+            var selectedSymbol = FilterSymobl(_symbols);
 
             foreach (var itm in _symbols)
             {
                 var symbol = itm.Key;
                 var path = $"{itm.Value}\\{_interval}";
 
+                //Get Available Trade Date
+                var available_dates = GetAvailableDate(path);
+
+                var mon_ranges = available_dates
+                    .GroupBy(g => g.ToString("yyyyMM"))
+                    .ToDictionary(k => k.Key, v => v.ToList());
+
+
                 //Handle Dates
-                foreach(var _mon in date_ranges)
+                foreach (var _mon in mon_ranges)
                 {
                     var task = Task.Run(() =>
                     {
@@ -69,6 +70,9 @@ namespace cTrader.OpenData.ParquetConversion
             Console.ReadLine();
         }
 
+
+
+
         /// <summary>
         /// Export Data to Parquet in 
         /// </summary>
@@ -91,8 +95,8 @@ namespace cTrader.OpenData.ParquetConversion
             var _isRealBids = data.Select(s => s.IsRealBid).ToArray();
             var realBitCol = new DataColumn(new DataField<bool>("IsRealBid"), _isRealBids);
 
-            var _timeUTC = data.Select(s => s.TimeUtc).ToArray();
-            var timeCol = new DataColumn(new DataField<DateTime>("TimeUtc"), _timeUTC);
+            var _timeUTC = data.Select(s => new DateTimeOffset(s.TimeUtc)).ToArray();
+            var timeCol = new DataColumn(new DataField<DateTimeOffset>("TimeUtc"), _timeUTC);
             #endregion
 
             // create file schema
@@ -134,10 +138,40 @@ namespace cTrader.OpenData.ParquetConversion
         /// </summary>
         /// <param name="_account"></param>
         /// <returns></returns>
-        static Dictionary<String,String> GetAvailableSymbol(string _account)
+        static Dictionary<String,String> GetAvailableSymbol()
         {
-            var _cachePath = $"{Environment.GetEnvironmentVariable("USERPROFILE")}\\AppData\\Roaming\\pepperstone cTrader\\BacktestingCache\\{_account}";
-            return Directory.GetDirectories(_cachePath).ToDictionary(k => k.Replace($"{_cachePath}\\",""), v => v);
+            var _cachePath = $"{Environment.GetEnvironmentVariable("USERPROFILE")}\\AppData\\Roaming\\pepperstone cTrader\\BacktestingCache";
+            var _accounts = Directory.GetDirectories(_cachePath).Select(s=> new FileInfo(s).Name);
+
+            #region User Input
+            Console.WriteLine($"We see following accounts. Press enter for first option: \n{String.Join("\n", _accounts) }");
+            var _userOption = Console.ReadLine().Trim();
+            _userOption = _userOption.IsNullOrEmpty() ? _accounts.First() : _userOption;
+            #endregion
+
+            var _accountCacheData = $"{Environment.GetEnvironmentVariable("USERPROFILE")}\\AppData\\Roaming\\pepperstone cTrader\\BacktestingCache\\{_userOption}";
+
+            return Directory.GetDirectories(_accountCacheData).ToDictionary(k => k.Replace($"{_cachePath}\\",""), v => v);
+        }
+        static List<DateTime> GetAvailableDate(string path)
+        {
+           return Directory.GetFiles(path, "*.tdbc*").Select(s => {
+               var file_info = new FileInfo(s);
+               return DateTime.ParseExact(file_info.Name.Substring(0, 10), "yyyy.MM.dd", null);
+               }).ToList();
+        }
+
+        static Dictionary<string, string> FilterSymobl(Dictionary<string, string> symbols)
+        {
+            #region User Input
+            Console.WriteLine($"We see following Symobls.\nUse comma(,) to seperate options.\nPress enter for all options: \n{String.Join("\n", symbols.Keys) }");
+            var _userOption = Console.ReadLine().Trim();
+            #endregion
+            if(_userOption.IsNullOrEmpty())
+                return symbols;
+
+            var selectedSymobl = _userOption.Split(',');
+            return symbols.Where(w => selectedSymobl.Contains(w.Key)).ToDictionary();
         }
     }
 }
